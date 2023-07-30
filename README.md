@@ -32,7 +32,6 @@ For use
 ```console
 docker-compose --env-file .env.local up
 ```
-OR
 ```console
-/bin/bash project.sh
+docker-compose --env-file .env.local exec -it "php" /bin/bash
 ```
