@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -11,6 +11,13 @@
         {% endblock %}
     </head>
     <body>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{path('app_study_class_index') }}">Class</a>
+            </li>
+        </ul>
+    </nav>
         {% block body %}{% endblock %}
     </body>
 </html>
