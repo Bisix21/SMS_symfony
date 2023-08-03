@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Enum\RolesEnum;
+use App\Service\RolesService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,9 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
 	public function __construct(
 		private UrlGeneratorInterface           $urlGenerator,
-		protected AuthorizationCheckerInterface $authorizationChecker)
+		protected AuthorizationCheckerInterface $authorizationChecker,
+		protected RolesService $rolesServices
+	)
 	{
 	}
 
@@ -48,22 +51,12 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 		if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
 			return new RedirectResponse($targetPath);
 		}
-		if ($this->authorizationChecker->isGranted(RolesEnum::Admin)) {
-			$targetPath = new RedirectResponse($this->urlGenerator->generate('app_user_index'));
-		}
-		if ($this->authorizationChecker->isGranted(RolesEnum::Director)) {
-			$targetPath = new RedirectResponse($this->urlGenerator->generate('app_user_index'));
-		}
-		if ($this->authorizationChecker->isGranted(RolesEnum::Student)) {
-			$targetPath = new RedirectResponse($this->urlGenerator->generate('app_user_index'));
-		}
-		// For example:
-		return $targetPath;
-//			throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
+		return $this->rolesServices->handleRolesRedirect($this->authorizationChecker, $this->urlGenerator);
 	}
 
 	protected function getLoginUrl(Request $request): string
 	{
 		return $this->urlGenerator->generate(self::LOGIN_ROUTE);
 	}
+
 }

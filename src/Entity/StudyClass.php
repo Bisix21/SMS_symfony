@@ -24,9 +24,13 @@ class StudyClass
     #[ORM\OneToMany(mappedBy: 'study_class', targetEntity: User::class)]
     private Collection $students;
 
+    #[ORM\ManyToMany(targetEntity: Subject::class, mappedBy: 'study_class')]
+    private Collection $subjects;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +87,33 @@ class StudyClass
             if ($studentId->getStudyClass() === $this) {
                 $studentId->setStudyClass(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Subject>
+     */
+    public function getSubjects(): Collection
+    {
+        return $this->subjects;
+    }
+
+    public function addSubject(Subject $subject): static
+    {
+        if ($this->subjects->contains($subject)) {
+            $this->subjects->add($subject);
+            $subject->addStudyClass($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubject(Subject $subject): static
+    {
+        if ($this->subjects->removeElement($subject)) {
+            $subject->removeStudyClass($this);
         }
 
         return $this;

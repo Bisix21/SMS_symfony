@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Forbidden access!
+{% endblock %}
+
+{% block body %}
+    <h2>Code: 403</h2>
+    <h5>Access is forbidden!</h5>
+    <p>Go back  to <a href="{{ path('app_home') }}">home</a></p>
+{% endblock %}

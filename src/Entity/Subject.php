@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SubjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SubjectRepository::class)]
@@ -18,6 +20,14 @@ class Subject
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\ManyToMany(targetEntity: StudyClass::class, inversedBy: 'subjects')]
+    private Collection $studyClass;
+
+    public function __construct()
+    {
+        $this->studyClass = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -44,6 +54,30 @@ class Subject
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StudyClass>
+     */
+    public function getStudyClass(): Collection
+    {
+        return $this->studyClass;
+    }
+
+    public function addStudyClass(StudyClass $studyClass): static
+    {
+        if (!$this->studyClass->contains($studyClass)) {
+            $this->studyClass->add($studyClass);
+        }
+
+        return $this;
+    }
+
+    public function removeStudyClass(StudyClass $studyClass): static
+    {
+        $this->studyClass->removeElement($studyClass);
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -24,8 +25,10 @@ class RegistrationFormType extends AbstractType
 	        ->add('first_name', TextType::class)
 	        ->add('name', TextType::class)
 	        ->add('sur_name', TextType::class)
-	        ->add('birthday', DateType::class, [
+	        ->add('birthday', BirthdayType::class, [
 		        'widget' => 'choice',
+		        'input'  => 'datetime_immutable',
+		        'years' => range(date('Y') - 66, (int)date('Y') + 10),
 	        ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -37,7 +40,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Please enter a password',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 4,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,

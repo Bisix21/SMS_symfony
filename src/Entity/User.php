@@ -41,11 +41,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(length: 255)]
 	private ?string $sur_name = null;
 
-	#[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+	#[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
 	private ?DateTimeInterface $birthday = null;
 
 	#[ORM\ManyToOne(inversedBy: 'students')]
 	private ?StudyClass $study_class = null;
+
+	#[ORM\Column(nullable: true)]
+	private ?bool $is_verified = null;
 
 	public function getId(): ?int
 	{
@@ -173,6 +176,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function setStudyClass(?StudyClass $study_class): static
 	{
 		$this->study_class = $study_class;
+
+		return $this;
+	}
+
+	public function isIsVerified(): ?bool
+	{
+		return $this->is_verified;
+	}
+
+	public function setIsVerified(bool $is_verified): static
+	{
+		$this->is_verified = $is_verified;
 
 		return $this;
 	}

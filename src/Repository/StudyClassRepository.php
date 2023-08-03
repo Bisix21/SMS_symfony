@@ -16,10 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StudyClassRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, StudyClass::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, StudyClass::class);
+	}
 
 //    /**
 //     * @return StudyClass[] Returns an array of StudyClass objects
@@ -45,6 +45,18 @@ class StudyClassRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+	public function findAllClasses(callable $callback): array
+	{
+		$newClassList = [];
+		$classes = $this->findAll();
+		if ($callback) {
+			foreach ($classes as $class) {
+				$newClassList[] = $class;
+			}
+		}
+		return $newClassList;
+	}
 
 
 }

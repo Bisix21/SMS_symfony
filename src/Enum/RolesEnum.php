@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum RolesEnum
+enum RolesEnum: string
 {
 	const Admin = "ROLE_ADMIN";
 	const Director = "ROLE_DIRECTOR";

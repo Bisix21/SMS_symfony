@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Subject{% endblock %}
+
+{% block body %}
+    <h1>Subject</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <th>Class</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>{{ subject.id }}</td>
+            <td>{{ subject.name }}</td>
+            <td>{{ subject.description }}</td>
+{#            <td>{{ subject.study_class }}</td>#}
+            <td>
+                <ul>
+                    {% for class in subject.studyClass %}
+                        <li>
+                            {{ class.getNumber }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_subject_index') }}">back to list</a>
+
+    <a href="{{ path('app_subject_edit', {'id': subject.id}) }}">edit</a>
+
+    {{ include('subject/_delete_form.html.twig') }}
+{% endblock %}
