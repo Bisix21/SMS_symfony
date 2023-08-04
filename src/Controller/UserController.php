@@ -3,29 +3,34 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\MessagesEnum;
 use App\Enum\RolesEnum;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\ControllerService;
 use App\Service\RolesService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(RolesEnum::Admin)]
+#[IsGranted(RolesEnum::Director)]
 #[Route('/user')]
-class UserController extends AbstractController
+class UserController extends ControllerService
 {
 	#[Route('/', name: 'app_user_index', methods: ['GET'])]
 	public function index(UserRepository $userRepository): Response
 	{
 		return $this->render('user/index.html.twig', [
-			'users' => $userRepository->findAll(),
+			'users' => $this->isGranted(RolesEnum::Admin) ?
+				$userRepository->findAll():
+				$userRepository->selectUsersWithCallbackFilter(
+					fn($user)=>!in_array(RolesEnum::Admin, $user->getRoles())
+				),
 		]);
 	}
-
+	#[IsGranted(RolesEnum::Admin)]
 	#[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
 	public function new(
 		Request                $request,
@@ -39,8 +44,8 @@ class UserController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$entityManager->persist($user);
 			$entityManager->flush();
-
-			return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+			$this->addFlash(MessagesEnum::SUCCESS_SAVED->name, MessagesEnum::SUCCESS_SAVED->value);
+			return $this->redirect($request->headers->get('referer'));
 		}
 
 		return $this->render('user/new.html.twig', [
@@ -56,7 +61,7 @@ class UserController extends AbstractController
 			'user' => $user,
 		]);
 	}
-
+	#[IsGranted(RolesEnum::Admin)]
 	#[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
 	public function edit(
 		Request                $request,
@@ -73,7 +78,8 @@ class UserController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$entityManager->flush();
 
-			return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+			$this->addFlash(MessagesEnum::SUCCESS_UPDATE->name, MessagesEnum::SUCCESS_UPDATE->value);
+			return $this->redirect($request->headers->get('referer'));
 		}
 
 		return $this->render('user/edit.html.twig', [
@@ -81,7 +87,7 @@ class UserController extends AbstractController
 			'form' => $form,
 		]);
 	}
-
+	#[IsGranted(RolesEnum::Admin)]
 	#[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
 	public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
 	{
@@ -89,7 +95,7 @@ class UserController extends AbstractController
 			$entityManager->remove($user);
 			$entityManager->flush();
 		}
-
+		$this->addFlash(MessagesEnum::SUCCESS_DELETED->name, MessagesEnum::SUCCESS_DELETED->value);
 		return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
 	}
 }

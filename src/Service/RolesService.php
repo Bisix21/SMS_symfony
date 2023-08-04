@@ -17,19 +17,20 @@ class RolesService
 			'Classmate' => RolesEnum::Classmate,
 		];
 		if ($isAdmin) {
+			$roles['Director'] = RolesEnum::Director;
 			$roles['Admin'] = RolesEnum::Admin;
 		}
 		return $roles;
 	}
 
 	//TODO refactor code
-	public function handleRolesRedirect($authChecker, $urlGenerator):RedirectResponse
+	public function handleRolesRedirect($authChecker, $urlGenerator): RedirectResponse
 	{
 		if ($authChecker->isGranted(RolesEnum::Admin)) {
 			return new RedirectResponse($urlGenerator->generate('app_admin_dashboard'));
 		}
 		if ($authChecker->isGranted(RolesEnum::Director)) {
-			return new RedirectResponse($urlGenerator->generate('app_user_index'));
+			return new RedirectResponse($urlGenerator->generate('app_director_dashboard'));
 		}
 		if ($authChecker->isGranted(RolesEnum::Student)) {
 			return new RedirectResponse($urlGenerator->generate('app_user_index'));

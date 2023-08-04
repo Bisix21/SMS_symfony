@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Enum\RolesEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use LogicException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -67,12 +67,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
 	public function selectUsersWithCallbackFilter(callable $callback): array
 	{
-		$data = [];
-		$users = $this->findAll();
-		foreach ($users as $user) {
-			if ($callback($user)) {
-				$data[] = $user;
+		try {
+			$data = [];
+			$users = $this->findAll();
+			foreach ($users as $user) {
+				if ($callback($user)) {
+					$data[] = $user;
+				}
 			}
+		} catch (LogicException) {
+			throw new \LogicException(sprintf('User %s is not verified', $user->getName()));
 		}
 		return $data;
 	}

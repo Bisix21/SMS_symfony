@@ -1,4 +1,7 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+  {{ form_widget(form) }}
+{{ include('part/component/button.html.twig',{
+    'class':'btn btn-primary',
+    'name': name|default('Save')
+}) }}
 {{ form_end(form) }}

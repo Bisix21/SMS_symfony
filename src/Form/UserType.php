@@ -12,35 +12,36 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('email')
-	        ->add('roles', ChoiceType::class, [
-		        'choices' => $options['roles'],
-		        'multiple' => true,
-		        'expanded' => true,
-		        'attr' => [
-			        'class' => 'role-line'
-		        ]
-	        ])
-            ->add('password')
-            ->add('first_name')
-            ->add('name')
-            ->add('sur_name')
-            ->add('birthday', BirthdayType::class,[
-	            'widget' => 'choice',
-	            'input'  => 'datetime_immutable'
-            ])
-	        ->add('is_verified', CheckboxType::class)
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+	{
+		$builder
+			->add('email')
+			->add('roles', ChoiceType::class, [
+				'choices' => $options['roles'],
+				'multiple' => true,
+				'expanded' => true,
+				'attr' => [
+					'class' => 'role-line'
+				]
+			])
+			->add('password')
+			->add('first_name')
+			->add('name')
+			->add('sur_name')
+			->add('birthday', BirthdayType::class, [
+				'widget' => 'choice',
+				'input' => 'datetime_immutable'
+			])
+			->add('is_verified', CheckboxType::class, [
+				'required' => false
+			]);
+	}
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-	        'roles' => []
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver): void
+	{
+		$resolver->setDefaults([
+			'data_class' => User::class,
+			'roles' => []
+		]);
+	}
 }

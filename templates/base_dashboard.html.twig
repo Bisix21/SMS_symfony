@@ -12,11 +12,17 @@
 
 </head>
 <body>
-{% include '/part/message/_flash.html.twig' %}
-{# read and display all flash messages #}
-
-
-{% block body %}{% endblock %}
+<div class="container-fluid">
+    <div class="row">
+        {% include '/part/_header.html.twig' %}
+        {% include 'part/menu/_dashboard.html.twig' %}
+        {# read and display all flash messages #}
+        {% include '/part/message/_flash.html.twig' %}
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+</div>
 {% block javascripts %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
