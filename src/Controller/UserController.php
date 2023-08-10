@@ -34,11 +34,14 @@ class UserController extends ControllerService
 	#[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
 	public function new(
 		Request                $request,
-		EntityManagerInterface $entityManager
+		EntityManagerInterface $entityManager,
+		RolesService $rolesService
 	): Response
 	{
 		$user = new User();
-		$form = $this->createForm(UserType::class, $user);
+		$form = $this->createForm(UserType::class, $user,[
+			'roles' => $this->isGranted(RolesEnum::Admin) ? $rolesService->roles(true) : $rolesService->roles()
+		]);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
@@ -61,17 +64,17 @@ class UserController extends ControllerService
 			'user' => $user,
 		]);
 	}
-	#[IsGranted(RolesEnum::Admin)]
+	#[IsGranted(RolesEnum::Director)]
 	#[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
 	public function edit(
 		Request                $request,
 		User                   $user,
 		EntityManagerInterface $entityManager,
-		RolesService $rolesServices
+		RolesService $rolesService
 	): Response
 	{
 		$form = $this->createForm(UserType::class, $user, [
-			'roles' => $this->isGranted(RolesEnum::Admin) ? $rolesServices->roles(true) : $rolesServices->roles()
+			'roles' => $this->isGranted(RolesEnum::Admin) ? $rolesService->roles(true) : $rolesService->roles()
 		]);
 		$form->handleRequest($request);
 

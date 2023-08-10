@@ -7,9 +7,5 @@
 
     {{ include('user/_form.html.twig', {'name': 'Update'}) }}
 
-    {{ include('part/component/link.html.twig', {
-        'path':path('app_user_index'),
-        'name':'Back to list'
-    }) }}
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

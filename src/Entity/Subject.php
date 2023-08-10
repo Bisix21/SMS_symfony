@@ -21,7 +21,7 @@ class Subject
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToMany(targetEntity: StudyClass::class, inversedBy: 'subjects')]
+    #[ORM\ManyToMany(targetEntity: StudyClass::class, inversedBy: 'study_class_subject')]
     private Collection $studyClass;
 
     public function __construct()

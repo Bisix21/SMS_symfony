@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	private ?StudyClass $study_class = null;
 
 	#[ORM\Column(nullable: true)]
-	private ?bool $is_verified = null;
+	private ?bool $verified = null;
 
 	public function getId(): ?int
 	{
@@ -104,7 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->password;
 	}
 
-	public function setPassword(string $password): static
+	public function setPassword(string $password = "password"): static
 	{
 		$this->password = $password;
 
@@ -180,14 +180,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this;
 	}
 
-	public function isIsVerified(): ?bool
+	public function isVerified(): ?bool
 	{
-		return $this->is_verified;
+		return $this->verified;
 	}
 
-	public function setIsVerified(bool $is_verified): static
+	public function setVerified(bool $verified): static
 	{
-		$this->is_verified = $is_verified;
+		$this->verified = $verified;
 
 		return $this;
 	}

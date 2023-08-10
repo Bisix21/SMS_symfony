@@ -4,9 +4,18 @@ namespace App\Service;
 
 use App\Enum\RolesEnum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RolesService
 {
+	public function __construct(
+		private UrlGeneratorInterface           $urlGenerator,
+		protected AuthorizationCheckerInterface $authorizationChecker,
+	)
+	{
+	}
+
 	public function roles(bool $isAdmin = false): array
 	{
 		$roles = [
@@ -24,17 +33,17 @@ class RolesService
 	}
 
 	//TODO refactor code
-	public function handleRolesRedirect($authChecker, $urlGenerator): RedirectResponse
+	public function handleRolesRedirect(): RedirectResponse
 	{
-		if ($authChecker->isGranted(RolesEnum::Admin)) {
-			return new RedirectResponse($urlGenerator->generate('app_admin_dashboard'));
+		if ($this->authorizationChecker->isGranted(RolesEnum::Admin)) {
+			return new RedirectResponse($this->urlGenerator->generate('app_admin_dashboard'));
 		}
-		if ($authChecker->isGranted(RolesEnum::Director)) {
-			return new RedirectResponse($urlGenerator->generate('app_director_dashboard'));
+		if ($this->authorizationChecker->isGranted(RolesEnum::Director)) {
+			return new RedirectResponse($this->urlGenerator->generate('app_director_dashboard'));
 		}
-		if ($authChecker->isGranted(RolesEnum::Student)) {
-			return new RedirectResponse($urlGenerator->generate('app_user_index'));
+		if ($this->authorizationChecker->isGranted(RolesEnum::Student)) {
+			return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
 		}
-		return new RedirectResponse($urlGenerator->generate('app_home'));
+		return new RedirectResponse($this->urlGenerator->generate('app_home'));
 	}
 }

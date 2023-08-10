@@ -7,6 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,25 +18,40 @@ class UserType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder
-			->add('email')
+			->add('email', EmailType::class,[
+				'label' => 'Enter email:',
+				'required' => true
+			])
 			->add('roles', ChoiceType::class, [
 				'choices' => $options['roles'],
 				'multiple' => true,
 				'expanded' => true,
-				'attr' => [
-					'class' => 'role-line'
-				]
+				'label'=>'Select roles for user:',
 			])
-			->add('password')
-			->add('first_name')
-			->add('name')
-			->add('sur_name')
+			->add('password',PasswordType::class,[
+				'label'=>'Enter password:'
+			])
+			->add('first_name', TextType::class,[
+				'label'=>'Enter first name:',
+				'required' => true
+			])
+			->add('name', TextType::class,[
+				'label'=>'Enter name:',
+				'required' => true
+			])
+			->add('sur_name', TextType::class,[
+				'label'=>'Enter sur-name:',
+				'required' => true
+			])
 			->add('birthday', BirthdayType::class, [
 				'widget' => 'choice',
-				'input' => 'datetime_immutable'
+				'input' => 'datetime_immutable',
+				'label' => 'Select birthday:',
+				'required' => true
 			])
-			->add('is_verified', CheckboxType::class, [
-				'required' => false
+			->add('verified', CheckboxType::class, [
+				'required' => false,
+				'label'=>'This account is verified'
 			]);
 	}
 

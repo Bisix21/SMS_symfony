@@ -12,7 +12,6 @@ class DirectorDashboardController extends AbstractController
     public function index(): Response
     {
         return $this->render('director_dashboard/index.html.twig', [
-            'controller_name' => 'DirectorDashboardController',
         ]);
     }
 }

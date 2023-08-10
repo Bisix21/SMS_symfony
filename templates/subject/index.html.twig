@@ -4,14 +4,14 @@
 
 {% block body %}
     <h1>Subject index</h1>
-
+    <a class="btn btn-success" href="{{ path('app_subject_new') }}">Create new</a>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>actions</th>
+                <th>Classes</th>
             </tr>
         </thead>
         <tbody>
@@ -30,8 +30,8 @@
                     </ul>
                 </td>
                 <td>
-                    <a href="{{ path('app_subject_show', {'id': subject.id}) }}">show</a>
-                    <a href="{{ path('app_subject_edit', {'id': subject.id}) }}">edit</a>
+                   <a class="btn btn-info" href="{{ path('app_subject_show', {'id': subject.id}) }}">show</a>
+                    <a class="btn btn-warning" href="{{ path('app_subject_edit', {'id': subject.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -41,6 +41,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_subject_new') }}">Create new</a>
 {% endblock %}

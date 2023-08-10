@@ -1,4 +1,11 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_widget(form) }}
+    {{ include('part/component/button.html.twig',{
+        'class':'btn btn-success',
+        'name': name
+    }) }}
+    {{ include('part/component/link.html.twig', {
+        'path':path('app_subject_index'),
+        'name':'Back to list'
+    }) }}
 {{ form_end(form) }}

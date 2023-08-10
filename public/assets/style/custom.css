@@ -1,8 +1,13 @@
 .custom-alert {
     z-index: 9999;
     position: fixed;
-    bottom: 2%;
     right: 1%;
+    top: 0;
+}
+.custom-toast {
+    position: fixed;
+    right: 1%;
+    bottom: 1%;
 }
 
 .navbar-nav .dropdown-menu {

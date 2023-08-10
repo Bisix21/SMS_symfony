@@ -2,31 +2,34 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Enum\MessagesEnum;
+use App\Service\ControllerService;
+use App\Service\RolesService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController
+class SecurityController extends ControllerService
 {
-    #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+	#[Route(path: '/login', name: 'app_login')]
+	public function login(AuthenticationUtils $authenticationUtils, RolesService $rolesService): Response
+	{
+		if ($this->getUser()) {
+			$this->addFlash(MessagesEnum::WARNING_LOGIN_ALREADY->name, MessagesEnum::WARNING_LOGIN_ALREADY->value);
+			return $rolesService->handleRolesRedirect();
+		}
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
-    }
+		// get the login error if there is one
+		$error = $authenticationUtils->getLastAuthenticationError();
+		// last username entered by the user
+		$lastUsername = $authenticationUtils->getLastUsername();
+		return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+	}
 
-    #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
-    {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
+	#[Route(path: '/logout', name: 'app_logout')]
+	public function logout(): void
+	{
+		throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+	}
 }

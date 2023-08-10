@@ -24,7 +24,7 @@ class StudyClass
     #[ORM\OneToMany(mappedBy: 'study_class', targetEntity: User::class)]
     private Collection $students;
 
-    #[ORM\ManyToMany(targetEntity: Subject::class, mappedBy: 'study_class')]
+    #[ORM\ManyToMany(targetEntity: Subject::class, mappedBy: 'study_class_subject')]
     private Collection $subjects;
 
     public function __construct()
@@ -72,7 +72,7 @@ class StudyClass
 
     public function addStudents(User $studentId): static
     {
-        if ($this->students->contains($studentId)) {
+        if (!$this->students->contains($studentId)) {
             $this->students->add($studentId);
             $studentId->setStudyClass($this);
         }
@@ -102,7 +102,7 @@ class StudyClass
 
     public function addSubject(Subject $subject): static
     {
-        if ($this->subjects->contains($subject)) {
+        if (!$this->subjects->contains($subject)) {
             $this->subjects->add($subject);
             $subject->addStudyClass($this);
         }
