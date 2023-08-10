@@ -1,0 +1,11 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}New StudyClass{% endblock %}
+
+{% block body %}
+    <h1>Create new StudyClass</h1>
+
+    {{ include('study_class/_form.html.twig') }}
+
+    <a href="{{ path('app_study_class_index') }}">back to list</a>
+{% endblock %}

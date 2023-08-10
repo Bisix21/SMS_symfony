@@ -1,0 +1,36 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}StudyClass index{% endblock %}
+
+{% block body %}
+    <h1>StudyClass index</h1>
+    <a class="btn btn-success" href="{{ path('app_study_class_new') }}">Create new</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Number</th>
+            <th>Description</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for study_class in study_classes %}
+            <tr>
+                <td>{{ study_class.id }}</td>
+                <td>{{ study_class.number }}</td>
+                <td>{{ study_class.description }}</td>
+                <td>
+                    <a class="btn btn-info" href="{{ path('app_study_class_show', {'id': study_class.id}) }}">Show</a>
+                    <a class="btn btn-warning"
+                       href="{{ path('app_study_class_edit', {'id': study_class.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

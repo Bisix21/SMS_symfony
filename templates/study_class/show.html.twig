@@ -1,0 +1,38 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}StudyClass{% endblock %}
+
+{% block body %}
+    <h1>StudyClass</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <th>Number</th>
+            <th>Description</th>
+            <th>Students</th>
+        </tr>
+        <tr>
+            <td>{{ study_class.id }}</td>
+            <td>{{ study_class.number }}</td>
+            <td>{{ study_class.description }}</td>
+            <td>
+                <ul>
+                    {% for student in study_class.students %}
+                        <li>
+                            {{ student.getFirstName }} {{ student.getName }} {{ student.getSurName }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-block" href="{{ path('app_study_class_index') }}">back to list</a>
+
+    <a class="btn btn-block" href="{{ path('app_study_class_edit', {'id': study_class.id}) }}">edit</a>
+
+    {{ include('study_class/_delete_form.html.twig') }}
+{% endblock %}
