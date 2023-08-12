@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\StudyClass;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -46,17 +47,13 @@ class StudyClassRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-	public function findAllClasses(callable $callback): array
-	{
-		$newClassList = [];
-		$classes = $this->findAll();
-		if ($callback) {
-			foreach ($classes as $class) {
-				$newClassList[] = $class;
-			}
+	public function addStudents($users, StudyClass $studyClass, UserRepository $userRepository){
+		foreach ( $users as $user) {
+			$studyClass->addStudents($userRepository->find($user->getId()));
 		}
-		return $newClassList;
 	}
+
+
 
 
 }

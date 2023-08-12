@@ -80,4 +80,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		}
 		return $data;
 	}
+	public function getClassUsers(int $class_id): array
+	{
+		return $this->findBy(['study_class'=> $class_id]);
+	}
 }

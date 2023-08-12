@@ -11,6 +11,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted(RolesEnum::Admin)]
 class AdminDashboardController extends AbstractController
 {
+	#[Route('/dashboard', name: 'app_dashboard')]
 	#[Route('/admin/dashboard', name: 'app_admin_dashboard')]
 	public function index(): Response
 	{

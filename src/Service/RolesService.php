@@ -41,6 +41,9 @@ class RolesService
 		if ($this->authorizationChecker->isGranted(RolesEnum::Director)) {
 			return new RedirectResponse($this->urlGenerator->generate('app_director_dashboard'));
 		}
+		if ($this->authorizationChecker->isGranted(RolesEnum::Teacher)) {
+			return new RedirectResponse($this->urlGenerator->generate('app_teacher_dashboard'));
+		}
 		if ($this->authorizationChecker->isGranted(RolesEnum::Student)) {
 			return new RedirectResponse($this->urlGenerator->generate('app_user_index'));
 		}

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(RolesEnum::Director)]
+#[IsGranted(RolesEnum::Teacher)]
 #[Route('/subject')]
 class SubjectController extends AbstractController
 {
@@ -25,7 +25,7 @@ class SubjectController extends AbstractController
 			'subjects' => $subjectRepository->findAll(),
 		]);
 	}
-
+	#[IsGranted(RolesEnum::Director)]
 	#[Route('/new', name: 'app_subject_new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager, StudyClassRepository $classRepository): Response
 	{
@@ -55,7 +55,7 @@ class SubjectController extends AbstractController
 			'subject' => $subject,
 		]);
 	}
-
+	#[IsGranted(RolesEnum::Director)]
 	#[Route('/{id}/edit', name: 'app_subject_edit', methods: ['GET', 'POST'])]
 	public function edit(Request $request, Subject $subject, EntityManagerInterface $entityManager, StudyClassRepository $classRepository): Response
 	{
@@ -75,7 +75,7 @@ class SubjectController extends AbstractController
 			'form' => $form,
 		]);
 	}
-
+	#[IsGranted(RolesEnum::Director)]
 	#[Route('/{id}', name: 'app_subject_delete', methods: ['POST'])]
 	public function delete(Request $request, Subject $subject, EntityManagerInterface $entityManager): Response
 	{

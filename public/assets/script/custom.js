@@ -28,6 +28,7 @@ function custom_toast(e, time) {
     });
 }
 
-$(document).onload(function(){
-    // stylingRoles()
-})
+$(document).ready(function () {
+
+});
+

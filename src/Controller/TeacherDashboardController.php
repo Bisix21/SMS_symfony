@@ -8,14 +8,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(RolesEnum::Director)]
-class DirectorDashboardController extends AbstractController
+#[IsGranted(RolesEnum::Teacher)]
+class TeacherDashboardController extends AbstractController
 {
 	#[Route('/dashboard', name: 'app_dashboard')]
-    #[Route('/dashboard', name: 'app_director_dashboard')]
+    #[Route('/teacher/dashboard', name: 'app_teacher_dashboard')]
     public function index(): Response
     {
-        return $this->render('director_dashboard/index.html.twig', [
+        return $this->render('teacher_dashboard/index.html.twig', [
+            'controller_name' => 'TeacherDashboardController',
         ]);
     }
 }

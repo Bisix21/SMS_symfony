@@ -44,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
 	private ?DateTimeInterface $birthday = null;
 
-	#[ORM\ManyToOne(inversedBy: 'students')]
+	#[ORM\ManyToOne(targetEntity: StudyClass::class, inversedBy: 'study_class')]
 	private ?StudyClass $study_class = null;
 
 	#[ORM\Column(nullable: true)]
@@ -120,42 +120,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		// $this->plainPassword = null;
 	}
 
-	public function getFirstName(): ?string
-	{
-		return $this->first_name;
-	}
-
-	public function setFirstName(string $first_name): static
-	{
-		$this->first_name = $first_name;
-
-		return $this;
-	}
-
-	public function getName(): ?string
-	{
-		return $this->name;
-	}
-
-	public function setName(string $name): static
-	{
-		$this->name = $name;
-
-		return $this;
-	}
-
-	public function getSurName(): ?string
-	{
-		return $this->sur_name;
-	}
-
-	public function setSurName(string $sur_name): static
-	{
-		$this->sur_name = $sur_name;
-
-		return $this;
-	}
-
 	public function getBirthday(): ?DateTimeInterface
 	{
 		return $this->birthday;
@@ -188,6 +152,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function setVerified(bool $verified): static
 	{
 		$this->verified = $verified;
+
+		return $this;
+	}
+
+	public function getFullName(): string
+	{
+		return $this->getFirstName() . ' ' . $this->getName() . ' ' . $this->getSurName();
+	}
+
+	public function getFirstName(): ?string
+	{
+		return $this->first_name;
+	}
+
+	public function setFirstName(string $first_name): static
+	{
+		$this->first_name = $first_name;
+
+		return $this;
+	}
+
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
+
+	public function setName(string $name): static
+	{
+		$this->name = $name;
+
+		return $this;
+	}
+
+	public function getSurName(): ?string
+	{
+		return $this->sur_name;
+	}
+
+	public function setSurName(string $sur_name): static
+	{
+		$this->sur_name = $sur_name;
 
 		return $this;
 	}

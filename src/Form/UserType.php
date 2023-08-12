@@ -28,9 +28,6 @@ class UserType extends AbstractType
 				'expanded' => true,
 				'label'=>'Select roles for user:',
 			])
-			->add('password',PasswordType::class,[
-				'label'=>'Enter password:'
-			])
 			->add('first_name', TextType::class,[
 				'label'=>'Enter first name:',
 				'required' => true

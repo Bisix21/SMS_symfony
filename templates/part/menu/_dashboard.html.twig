@@ -6,6 +6,8 @@
                     {% include 'part/menu/_admin.html.twig' %}
                 {% elseif is_granted("ROLE_DIRECTOR") %}
                     {% include 'part/menu/_director.html.twig' %}
+                {% elseif is_granted("ROLE_TEACHER") %}
+                    {% include 'part/menu/_teacher.html.twig' %}
                 {% endif %}
             {% endif %}
         </ul>

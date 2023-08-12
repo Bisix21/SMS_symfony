@@ -1,11 +1,14 @@
 {{ form_start(form) }}
 {{ form_widget(form) }}
-    {{ include('part/component/button.html.twig',{
-        'class':'btn btn-success',
-        'name': name|default('Save')
-    }) }}
-    {{ include('part/component/link.html.twig', {
-        'path':path('app_study_class_index'),
-        'name':'Back to list'
-    }) }}
+
+{{ include('part/component/button.html.twig',{
+    'class':'btn btn-success',
+    'name': name|default('Save')
+}) }}
+{{ include('part/component/link.html.twig', {
+    'path':path('app_study_class_index'),
+    'name':'Back to list'
+}) }}
+
 {{ form_end(form) }}
+
