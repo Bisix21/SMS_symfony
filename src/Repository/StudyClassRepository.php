@@ -49,8 +49,13 @@ class StudyClassRepository extends ServiceEntityRepository
 
 	public function addStudents($users, StudyClass $studyClass, UserRepository $userRepository){
 		foreach ( $users as $user) {
-			$studyClass->addStudents($userRepository->find($user->getId()));
+			$studyClass->addUser($userRepository->find($user->getId()));
 		}
+	}
+	public function addClassmate($classmate, StudyClass $studyClass, UserRepository $userRepository){
+			if ($classmate){
+				$studyClass->addClassmate($userRepository->find($classmate->getId()));
+			}
 	}
 
 

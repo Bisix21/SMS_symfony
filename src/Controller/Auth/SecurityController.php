@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Auth;
 
 use App\Enum\MessagesEnum;
 use App\Service\ControllerService;

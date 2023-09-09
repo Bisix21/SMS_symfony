@@ -13,6 +13,6 @@ class ControllerService extends AbstractController
 	public function addFlash(string $type, mixed $message): void
 	{
 		$type = explode('_', $type);
-		parent::addFlash(strtolower($type[0]), sprintf($message, $type[1]));
+		parent::addFlash(strtolower($type[0]), sprintf($message, array_key_last($type)));
 	}
 }

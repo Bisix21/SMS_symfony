@@ -16,56 +16,61 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	#[ORM\Id]
-	#[ORM\GeneratedValue]
-	#[ORM\Column]
-	private ?int $id = null;
+   	#[ORM\GeneratedValue]
+   	#[ORM\Column]
+   	private ?int $id = null;
 
 	#[ORM\Column(length: 180, unique: true)]
-	private ?string $email = null;
+   	private ?string $email = null;
 
 	#[ORM\Column]
-	private array $roles = [];
+   	private array $roles = [];
 
 	/**
 	 * @var string The hashed password
 	 */
 	#[ORM\Column]
-	private ?string $password = null;
+   	private ?string $password = null;
 
 	#[ORM\Column(length: 255)]
-	private ?string $first_name = null;
+   	private ?string $firstName = null;
 
 	#[ORM\Column(length: 255)]
-	private ?string $name = null;
+   	private ?string $name = null;
 
 	#[ORM\Column(length: 255)]
-	private ?string $sur_name = null;
+   	private ?string $surName = null;
 
 	#[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-	private ?DateTimeInterface $birthday = null;
-
-	#[ORM\ManyToOne(targetEntity: StudyClass::class, inversedBy: 'study_class')]
-	private ?StudyClass $study_class = null;
+   	private ?DateTimeInterface $birthday = null;
 
 	#[ORM\Column(nullable: true)]
-	private ?bool $verified = null;
+   	private ?bool $verified = null;
+
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    private ?StudyClass $studyClass = null;
+
+	public function __construct()
+   	{
+   
+   	}
 
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+   	{
+   		return $this->id;
+   	}
 
 	public function getEmail(): ?string
-	{
-		return $this->email;
-	}
+   	{
+   		return $this->email;
+   	}
 
 	public function setEmail(string $email): static
-	{
-		$this->email = $email;
-
-		return $this;
-	}
+   	{
+   		$this->email = $email;
+   
+   		return $this;
+   	}
 
 	/**
 	 * A visual identifier that represents this user.
@@ -73,128 +78,128 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @see UserInterface
 	 */
 	public function getUserIdentifier(): string
-	{
-		return (string)$this->email;
-	}
+   	{
+   		return (string)$this->email;
+   	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getRoles(): array
-	{
-		$roles = $this->roles;
-		// guarantee every user at least has ROLE_USER
-		$roles[] = RolesEnum::User;
-
-		return array_unique($roles);
-	}
+   	{
+   		$roles = $this->roles;
+   		// guarantee every user at least has ROLE_USER
+   		$roles[] = RolesEnum::User;
+   
+   		return array_unique($roles);
+   	}
 
 	public function setRoles(array $roles): static
-	{
-		$this->roles = $roles;
-
-		return $this;
-	}
+   	{
+   		$this->roles = $roles;
+   
+   		return $this;
+   	}
 
 	/**
 	 * @see PasswordAuthenticatedUserInterface
 	 */
 	public function getPassword(): string
-	{
-		return $this->password;
-	}
+   	{
+   		return $this->password;
+   	}
 
 	public function setPassword(string $password = "password"): static
-	{
-		$this->password = $password;
-
-		return $this;
-	}
+   	{
+   		$this->password = $password;
+   
+   		return $this;
+   	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function eraseCredentials(): void
-	{
-		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
-	}
+   	{
+   		// If you store any temporary, sensitive data on the user, clear it here
+   		// $this->plainPassword = null;
+   	}
 
 	public function getBirthday(): ?DateTimeInterface
-	{
-		return $this->birthday;
-	}
+   	{
+   		return $this->birthday;
+   	}
 
 	public function setBirthday(?DateTimeInterface $birthday): static
-	{
-		$this->birthday = $birthday;
-
-		return $this;
-	}
-
-	public function getStudyClass(): ?StudyClass
-	{
-		return $this->study_class;
-	}
-
-	public function setStudyClass(?StudyClass $study_class): static
-	{
-		$this->study_class = $study_class;
-
-		return $this;
-	}
+   	{
+   		$this->birthday = $birthday;
+   
+   		return $this;
+   	}
 
 	public function isVerified(): ?bool
-	{
-		return $this->verified;
-	}
+   	{
+   		return $this->verified;
+   	}
 
-	public function setVerified(bool $verified): static
-	{
-		$this->verified = $verified;
-
-		return $this;
-	}
+	public function setVerified(): static
+   	{
+   		$this->verified = null;
+   
+   		return $this;
+   	}
 
 	public function getFullName(): string
-	{
-		return $this->getFirstName() . ' ' . $this->getName() . ' ' . $this->getSurName();
-	}
+   	{
+   		return $this->getFirstName() . ' ' . $this->getName() . ' ' . $this->getSurName();
+   	}
 
 	public function getFirstName(): ?string
-	{
-		return $this->first_name;
-	}
+   	{
+   		return $this->firstName;
+   	}
 
-	public function setFirstName(string $first_name): static
-	{
-		$this->first_name = $first_name;
-
-		return $this;
-	}
+	public function setFirstName(string $firstName): static
+   	{
+   		$this->firstName = $firstName;
+   
+   		return $this;
+   	}
 
 	public function getName(): ?string
-	{
-		return $this->name;
-	}
+   	{
+   		return $this->name;
+   	}
 
 	public function setName(string $name): static
-	{
-		$this->name = $name;
-
-		return $this;
-	}
+   	{
+   		$this->name = $name;
+   
+   		return $this;
+   	}
 
 	public function getSurName(): ?string
-	{
-		return $this->sur_name;
-	}
+   	{
+   		return $this->surName;
+   	}
 
-	public function setSurName(string $sur_name): static
-	{
-		$this->sur_name = $sur_name;
+	public function setSurName(string $surName): static
+   	{
+   		$this->surName = $surName;
+   
+   		return $this;
+   	}
 
-		return $this;
-	}
+	public function getStudyClass(): ?StudyClass
+   	{
+   		return $this->studyClass;
+   	}
+
+	public function setStudyClass(?StudyClass $studyClass): static
+   	{
+   		$this->studyClass = $studyClass;
+   
+   		return $this;
+   	}
 }
 

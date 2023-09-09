@@ -21,17 +21,12 @@ class StudyClass
 	#[ORM\Column(length: 255, nullable: true)]
 	private ?string $description = null;
 
-	#[ORM\OneToMany(mappedBy: 'study_class', targetEntity: User::class)]
+	#[ORM\OneToMany(mappedBy: 'studyClass', targetEntity: User::class)]
 	private Collection $user;
-
-	#[ORM\ManyToMany(targetEntity: Subject::class, mappedBy: 'study_class')]
-	#[ORM\JoinTable(name: "subject_study_class",)]
-	private Collection $subjects;
 
 	public function __construct()
 	{
 		$this->user = new ArrayCollection();
-		$this->subjects = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -66,57 +61,43 @@ class StudyClass
 	/**
 	 * @return Collection<int, User>
 	 */
-	public function getStudents(): Collection
+	public function getUser(): Collection
 	{
 		return $this->user;
 	}
 
-	public function addStudents(User $userId): static
+	public function addUser(User $user): static
 	{
-		if ($userId->getStudyClass() !== $this) {
-			$this->user->add($userId);
-			$userId->setStudyClass($this);
+//		dd($this->user);
+		if ($this->user->contains($user)) {
+			$this->user->add($user);
+			$user->setStudyClass($this);
 		}
 
 		return $this;
 	}
 
-	public function removeStudents(User $userId): static
+	public function removeUser(User $user): static
 	{
-		if ($this->user->removeElement($userId)) {
+		if ($this->user->removeElement($user)) {
 			// set the owning side to null (unless already changed)
-			if ($userId->getStudyClass() === $this) {
-				$userId->setStudyClass(null);
+			if ($user->getStudyClass() === $this) {
+				$user->setStudyClass(null);
 			}
 		}
 
 		return $this;
 	}
 
-	/**
-	 * @return Collection<int, Subject>
-	 */
-	public function getSubjects(): Collection
+	public function addClassmate(User $classmate): static
 	{
-		return $this->subjects;
-	}
-
-	public function addSubject(Subject $subject): static
-	{
-		if (!$this->subjects->contains($subject)) {
-			$this->subjects->add($subject);
-			$subject->addStudyClass($this);
+		if (!$this->user->contains($classmate)) {
+			$this->user->add($classmate);
+			$classmate->setStudyClass($this);
 		}
 
 		return $this;
 	}
 
-	public function removeSubject(Subject $subject): static
-	{
-		if ($this->subjects->removeElement($subject)) {
-			$subject->removeStudyClass($this);
-		}
 
-		return $this;
-	}
 }

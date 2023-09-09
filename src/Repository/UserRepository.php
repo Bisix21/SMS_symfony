@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Enum\RolesEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
@@ -65,6 +66,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //        ;
 //    }
 
+	public function getClassUsers(int $class_id): array
+	{
+		return $this->findBy(['studyClass' => $class_id, 'roles' => RolesEnum::Student]);
+	}
+
+	public function getTeachers(): array
+	{
+		return $this->selectUsersWithCallbackFilter(
+			fn(User $user) => in_array(RolesEnum::Teacher, $user->getRoles())
+		);
+	}
+
 	public function selectUsersWithCallbackFilter(callable $callback): array
 	{
 		try {
@@ -80,8 +93,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		}
 		return $data;
 	}
-	public function getClassUsers(int $class_id): array
+
+	public function getTeacherWithClass(int $id): ?User
 	{
-		return $this->findBy(['study_class'=> $class_id]);
+		return $this->find($id);
+	}
+
+	public function getClassmateWithClass(int $classId): array
+	{
+		return $this->selectUsersWithCallbackFilter(
+			function(User $user) use ($classId){
+				return in_array(RolesEnum::Classmate, $user->getRoles()) &&
+				$user->getStudyClass() === $classId;
+			}
+		);
 	}
 }

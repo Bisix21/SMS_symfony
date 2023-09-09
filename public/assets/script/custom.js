@@ -1,10 +1,3 @@
-function stylingRoles() {
-    const roles = document.querySelector('#user_roles input');
-    $(roles).each(function (){
-        $(roles).addClass('role-list')
-    })
-}
-
 function custom_alert(e, time) {
     $(e).each(function () {
         $(e).fadeIn(1000, function () {
@@ -28,7 +21,4 @@ function custom_toast(e, time) {
     });
 }
 
-$(document).ready(function () {
-
-});
 

@@ -1,9 +1,8 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\SubjectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SubjectRepository::class)]
@@ -20,12 +19,11 @@ class Subject
 	#[ORM\Column(length: 255, nullable: true)]
 	private ?string $description = null;
 
-	#[ORM\ManyToMany(targetEntity: StudyClass::class, inversedBy: 'subjects')]
-	private Collection $study_class;
+	#[ORM\Column(nullable: true)]
+	private ?bool $active = null;
 
 	public function __construct()
 	{
-		$this->study_class = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -57,26 +55,14 @@ class Subject
 		return $this;
 	}
 
-	/**
-	 * @return Collection<int, StudyClass>
-	 */
-	public function getStudyClass(): Collection
+	public function isActive(): ?bool
 	{
-		return $this->study_class;
+		return $this->active;
 	}
 
-	public function addStudyClass(StudyClass $study_class): static
+	public function setActive(?bool $active): static
 	{
-		if (!$this->study_class->contains($study_class)) {
-			$this->study_class->add($study_class);
-		}
-
-		return $this;
-	}
-
-	public function removeStudyClass(StudyClass $study_class): static
-	{
-		$this->study_class->removeElement($study_class);
+		$this->active = $active;
 
 		return $this;
 	}

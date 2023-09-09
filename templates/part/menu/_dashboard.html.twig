@@ -2,7 +2,7 @@
     <div class="position-sticky pt-3">
         <ul class="nav flex-column">
             {% if app.user %}
-                {% if is_granted("ROLE_ADMIN") %}
+                {% if is_granted("ROLE_ADMIN")  %}
                     {% include 'part/menu/_admin.html.twig' %}
                 {% elseif is_granted("ROLE_DIRECTOR") %}
                     {% include 'part/menu/_director.html.twig' %}

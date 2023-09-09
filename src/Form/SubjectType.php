@@ -7,6 +7,8 @@ use App\Entity\Subject;
 use Doctrine\ORM\Query\Expr\Select;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,8 +29,12 @@ class SubjectType extends AbstractType
 		        'choices' => $options['study_classes'],
 		        'choice_label' => 'number',
 		        'multiple' => true,
-		        'expanded' => true, // If you want to display checkboxes/radios
+		        'expanded' => true,
             ])
+	        ->add('active', CheckboxType::class,[
+				'label'=>'Is active',
+		        'required' => false
+	        ])
         ;
     }
 

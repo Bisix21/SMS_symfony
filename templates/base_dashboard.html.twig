@@ -31,13 +31,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="{{ asset('assets/script/custom.js') }}"></script>
-{#    <script src="{{ asset('assets/lib/multiselect/multiselect-dropdown.js') }}"></script>#}
+    {#    <script src="{{ asset('assets/lib/multiselect/multiselect-dropdown.js') }}"></script> #}
     <script type="application/javascript">
         $(document).ready(function () {
             const toast = document.querySelectorAll('.toast');
             const alert = document.querySelectorAll('.alert');
-            custom_toast(toast, 15)
-            custom_alert(alert, 5)
+            custom_toast(toast, 15);
+            custom_alert(alert, 5);
         })
     </script>
 {% endblock %}
